@@ -22,6 +22,6 @@ const columnSchema = new Schema(
 
 // columnSchema.post('save', MongooseError);
 
-const Column = model('user', columnSchema);
+const Column = model('column', columnSchema);
 
 module.exports = Column;

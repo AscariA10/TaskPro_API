@@ -27,6 +27,6 @@ const dashboardSchema = new Schema(
 
 // dashboardSchema.post('save', MongooseError);
 
-const Dashboard = model('user', dashboardSchema);
+const Dashboard = model('dashboard', dashboardSchema);
 
 module.exports = Dashboard;
