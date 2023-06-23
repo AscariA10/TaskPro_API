@@ -28,7 +28,7 @@ const cardSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-cardSchema.post('save', MongooseError);
+// cardSchema.post('save', MongooseError);
 
 const Card = model('user', cardSchema);
 

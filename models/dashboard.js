@@ -25,7 +25,7 @@ const dashboardSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-dashboardSchema.post('save', MongooseError);
+// dashboardSchema.post('save', MongooseError);
 
 const Dashboard = model('user', dashboardSchema);
 

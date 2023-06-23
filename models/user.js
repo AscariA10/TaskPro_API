@@ -35,7 +35,7 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-userSchema.post('save', MongooseError);
+// userSchema.post('save', MongooseError);
 
 const User = model('user', userSchema);
 

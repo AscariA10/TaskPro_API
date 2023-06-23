@@ -20,7 +20,7 @@ const columnSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-columnSchema.post('save', MongooseError);
+// columnSchema.post('save', MongooseError);
 
 const Column = model('user', columnSchema);
 
