@@ -24,15 +24,16 @@ const userSchema = new Schema(
       required: [true, "Password is required"],
     },
 
-    // theme: {
-    //   type: String,
-    //   enum: ['light', 'dark', 'violet'],
-    //   default: 'violet',
-    // },
-    // token: {
-    //   type: String,
-    //   default: null,
-    // },
+    theme: {
+      type: String,
+      enum: ["light", "dark", "violet"],
+      default: "violet",
+    },
+    // avatarURL: { type: String },
+    token: {
+      type: String,
+      default: null,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -50,7 +51,11 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
-const schemas = { registerSchema, loginSchema };
+const themeSchema = Joi.object({
+  theme: Joi.string().valid("light", "dark", "violet").required(),
+});
+
+const schemas = { registerSchema, loginSchema, themeSchema };
 
 const User = model("user", userSchema);
 

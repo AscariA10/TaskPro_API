@@ -35,20 +35,43 @@ async function login(req, res) {
   const token = jwt.sign(payload, JWT_TOKEN_KEY, {
     expiresIn: "23h",
   });
+  await User.findByIdAndUpdate(user._id, { token });
   res.status(200).json({
     token,
-    //   user: {
-    //     email: user.email,
-    //     subscription: user.subscription,
-    //   },
+    user: {
+      name: user.name,
+      theme: user.theme,
+    },
   });
+}
+
+async function getCurrent(req, res) {
+  const { name, email, theme } = req.user;
+  res.json({
+    name,
+    email,
+    theme,
+  });
+}
+
+async function logout(req, res) {
+  const { id } = req.user;
+  await User.findByIdAndUpdate(id, { token: "" });
+  res.status(204).json();
+}
+
+async function updateTheme(req, res) {
+  const { _id } = req.user;
+  console.log(_id);
+  const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
+  res.json(result);
 }
 
 module.exports = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
-  //   getCurrent: ctrlWrapper(getCurrent),
-  //   logout: ctrlWrapper(logout),
-  //   updateSubscription: ctrlWrapper(updateSubscription),
+  getCurrent: controllerWrapper(getCurrent),
+  logout: controllerWrapper(logout),
+  updateTheme: controllerWrapper(updateTheme),
   //   updateAvatar: ctrlWrapper(updateAvatar),
 };
