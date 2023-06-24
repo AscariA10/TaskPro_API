@@ -1,5 +1,5 @@
-const { HttpError } = require("../helpers/HttpError");
-const { controllerWrapper } = require("../helpers/decorators");
+const HttpError = require("../helpers/HttpError");
+const controllerWrapper = require("../helpers/decorators");
 const Dashboard = require("../models/dashboard");
 
 async function getAll(req, res) {
