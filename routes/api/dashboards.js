@@ -6,5 +6,5 @@ router.get('/', boardController.getAll);
 router.get('/:dashboardId', boardController.getById);
 router.post('/', boardController.addNew);
 router.put('/:dashboardId', boardController.updateById);
-router.delete('/:dashboradId', boardController.removeById);
+router.delete('/:dashboarddId', boardController.removeById);
 module.exports = router;
