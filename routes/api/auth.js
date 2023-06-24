@@ -10,7 +10,7 @@ const {
 
 const validateBody = require("../../middlewares/validateBody");
 const authenticate = require("../../middlewares/authenticate");
-const { schemas } = require("../../models/user");
+const schemas = require("../../models/validation-schemas/user-validation");
 
 const router = express.Router();
 

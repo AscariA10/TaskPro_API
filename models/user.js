@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const Joi = require("joi");
+// const Joi = require("joi");
 
 const MongooseError = require("../helpers/MongooseError");
 
@@ -40,23 +40,24 @@ const userSchema = new Schema(
 
 userSchema.post("save", MongooseError);
 
-const registerSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().pattern(emailRegExp).required(),
-  password: Joi.string().min(6).required(),
-});
+// const registerSchema = Joi.object({
+//   name: Joi.string().required(),
+//   email: Joi.string().pattern(emailRegExp).required(),
+//   password: Joi.string().min(6).required(),
+// });
 
-const loginSchema = Joi.object({
-  email: Joi.string().pattern(emailRegExp).required(),
-  password: Joi.string().min(6).required(),
-});
+// const loginSchema = Joi.object({
+//   email: Joi.string().pattern(emailRegExp).required(),
+//   password: Joi.string().min(6).required(),
+// });
 
-const themeSchema = Joi.object({
-  theme: Joi.string().valid("light", "dark", "violet").required(),
-});
+// const themeSchema = Joi.object({
+//   theme: Joi.string().valid("light", "dark", "violet").required(),
+// });
 
-const schemas = { registerSchema, loginSchema, themeSchema };
+// const schemas = { registerSchema, loginSchema, themeSchema };
 
 const User = model("user", userSchema);
 
-module.exports = { User, schemas };
+// module.exports = { User, schemas };
+module.exports = User;

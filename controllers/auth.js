@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/user");
+const User = require("../models/user");
 const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
 
@@ -62,7 +62,6 @@ async function logout(req, res) {
 
 async function updateTheme(req, res) {
   const { _id } = req.user;
-  console.log(_id);
   const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
   res.json(result);
 }

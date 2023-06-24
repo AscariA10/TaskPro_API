@@ -1,20 +1,22 @@
-const Joi = require('joi');
+const Joi = require("joi");
+
+const emailRegExp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
 const registerSchema = Joi.object({
-  email: Joi.string().required(),
-  password: Joi.string().required(),
-  subscription: Joi.string().required(),
+  name: Joi.string().required(),
+  email: Joi.string().pattern(emailRegExp).required(),
+  password: Joi.string().min(6).required(),
 });
 
 const loginSchema = Joi.object({
-  email: Joi.string().required(),
-  password: Joi.string().required(),
+  email: Joi.string().pattern(emailRegExp).required(),
+  password: Joi.string().min(6).required(),
 });
 
-const userEmailSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
+const themeSchema = Joi.object({
+  theme: Joi.string().valid("light", "dark", "violet").required(),
 });
 
-const schemas = { registerSchema, loginSchema, userEmailSchema };
+const schemas = { registerSchema, loginSchema, themeSchema };
 
 module.exports = schemas;
