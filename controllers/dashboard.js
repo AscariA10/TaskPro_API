@@ -13,7 +13,6 @@ async function getById(req, res) {
   const { dashboardId } = req.params;
   const result = await Dashboard.findById(dashboardId);
   const columns = await Column.find({ owner: result._id });
-  console.log(columns);
 
   if (!result) throw HttpError(404);
   res.json({
