@@ -4,8 +4,7 @@ const Dashboard = require("../models/dashboard");
 const Column = require("../models/column");
 
 async function getAll(req, res) {
-  // const { _id: owner } = req.user;
-  const owner = "test_owner_id_2";
+  const { _id: owner } = req.user;
   const result = await Dashboard.find({ owner }, "-createdAt -updatedAt");
   res.json(result);
 }
@@ -14,6 +13,7 @@ async function getById(req, res) {
   const { dashboardId } = req.params;
   const result = await Dashboard.findById(dashboardId);
   const columns = await Column.find({ owner: result._id });
+  console.log(columns);
 
   if (!result) throw HttpError(404);
   res.json({
@@ -23,8 +23,7 @@ async function getById(req, res) {
 }
 
 async function addNew(req, res) {
-  // const { _id: owner } = req.user;
-  const owner = "test_owner_id_2";
+  const { _id: owner } = req.user;
   const result = await Dashboard.create({ ...req.body, owner });
   res.status(201).json(result);
 }

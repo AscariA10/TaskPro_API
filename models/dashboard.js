@@ -17,10 +17,9 @@ const dashboardSchema = new Schema(
       type: String,
     },
     owner: {
-      type: String,
-      //   type: Schema.Types.ObjectId,
-      //   ref: "user",
-      //   required: true,
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }

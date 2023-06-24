@@ -4,7 +4,7 @@ const {
   updateById,
   addNew,
   removeById,
-} = require("../../controllers/column");
+} = require("../../controllers/card");
 
 const router = express.Router();
 

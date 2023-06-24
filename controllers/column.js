@@ -1,12 +1,17 @@
 const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
+const Card = require("../models/card");
 const Column = require("../models/column");
 
 async function getById(req, res) {
   const { columnId } = req.params;
   const result = await Column.findById(columnId);
+  const cards = await Card.find({ owner: result._id });
   if (!result) throw HttpError(404);
-  res.json(result);
+  res.json({
+    column: result,
+    cards,
+  });
 }
 
 async function addNew(req, res) {
