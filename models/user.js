@@ -1,32 +1,35 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const MongooseError = require('../helpers/MongooseError');
+const Joi = require("joi");
+
+const MongooseError = require("../helpers/MongooseError");
+
+const emailRegExp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
 const userSchema = new Schema(
   {
-    password: {
+    name: {
       type: String,
-      required: [true, 'Password is required'],
+      required: true,
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
+      match: emailRegExp,
       unique: true,
     },
-    avatarURL: { type: String },
+    password: {
+      type: String,
+      minlength: 6,
+      required: [true, "Password is required"],
+    },
+
     theme: {
       type: String,
-      enum: ['light', 'dark', 'violet'],
-      default: 'violet',
+      enum: ["light", "dark", "violet"],
+      default: "violet",
     },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    verificationToken: {
-      type: String,
-      required: [true, 'Verify token is required'],
-    },
+    // avatarURL: { type: String },
     token: {
       type: String,
       default: null,
@@ -35,8 +38,25 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// userSchema.post('save', MongooseError);
+userSchema.post("save", MongooseError);
 
-const User = model('user', userSchema);
+const registerSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().pattern(emailRegExp).required(),
+  password: Joi.string().min(6).required(),
+});
 
-module.exports = User;
+const loginSchema = Joi.object({
+  email: Joi.string().pattern(emailRegExp).required(),
+  password: Joi.string().min(6).required(),
+});
+
+const themeSchema = Joi.object({
+  theme: Joi.string().valid("light", "dark", "violet").required(),
+});
+
+const schemas = { registerSchema, loginSchema, themeSchema };
+
+const User = model("user", userSchema);
+
+module.exports = { User, schemas };
