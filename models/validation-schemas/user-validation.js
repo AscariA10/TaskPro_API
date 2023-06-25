@@ -17,6 +17,12 @@ const themeSchema = Joi.object({
   theme: Joi.string().valid("light", "dark", "violet").required(),
 });
 
-const schemas = { registerSchema, loginSchema, themeSchema };
+const userSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string().pattern(emailRegExp),
+  password: Joi.string().min(6),
+});
+
+const schemas = { registerSchema, loginSchema, themeSchema, userSchema };
 
 module.exports = schemas;

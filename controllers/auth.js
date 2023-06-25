@@ -13,7 +13,13 @@ async function register(req, res) {
     throw HttpError(409, "Email in use");
   }
   const hashdPassword = await bcrypt.hash(password, 10);
-  const newUser = await User.create({ ...req.body, password: hashdPassword });
+  const avatarURL = "";
+
+  const newUser = await User.create({
+    ...req.body,
+    password: hashdPassword,
+    avatarURL,
+  });
 
   res.status(201).json({
     email: newUser.email,
@@ -66,11 +72,63 @@ async function updateTheme(req, res) {
   res.json(result);
 }
 
+async function updateProfile(req, res) {
+  const { _id } = req.user;
+
+  if (!req.file && !req.body.password) {
+    const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
+    res.json(result);
+    return;
+  }
+
+  if (!req.body.password) {
+    const upload = req.file.path;
+    const result = await User.findByIdAndUpdate(
+      _id,
+      {
+        ...req.body,
+        avatarURL: upload,
+      },
+      { new: true }
+    );
+    res.json(result);
+    return;
+  }
+
+  if (!req.file) {
+    const hashdPassword = await bcrypt.hash(req.body.password, 10);
+    const result = await User.findByIdAndUpdate(
+      _id,
+      {
+        ...req.body,
+        password: hashdPassword,
+      },
+      { new: true }
+    );
+    res.json(result);
+    return;
+  }
+
+  const hashdPassword = await bcrypt.hash(req.body.password, 10);
+  const upload = req.file.path;
+
+  const result = await User.findByIdAndUpdate(
+    _id,
+    {
+      ...req.body,
+      password: hashdPassword,
+      avatarURL: upload,
+    },
+    { new: true }
+  );
+  res.json(result);
+}
+
 module.exports = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
   getCurrent: controllerWrapper(getCurrent),
   logout: controllerWrapper(logout),
   updateTheme: controllerWrapper(updateTheme),
-  //   updateAvatar: ctrlWrapper(updateAvatar),
+  updateProfile: controllerWrapper(updateProfile),
 };
