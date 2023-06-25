@@ -1,10 +1,22 @@
-const path = require('path');
-const express = require('express');
-const boardController = require('../../controllers/dashboard');
+const express = require("express");
+const {
+  getAll,
+  getById,
+  addNew,
+  updateById,
+  removeById,
+} = require("../../controllers/dashboard");
+
 const router = express.Router();
-router.get('/', boardController.getAll);
-router.get('/:dashboardId', boardController.getById);
-router.post('/', boardController.addNew);
-router.put('/:dashboardId', boardController.updateById);
-router.delete('/:dashboarddId', boardController.removeById);
+
+router.get("/", getAll);
+
+router.get("/:dashboardId", getById);
+
+router.post("/", addNew);
+
+router.put("/:dashboardId", updateById);
+
+router.delete("/:dashboardId", removeById);
+
 module.exports = router;

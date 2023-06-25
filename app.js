@@ -5,6 +5,8 @@ require("dotenv").config();
 
 const authRouter = require("./routes/api/auth");
 const dashboardRouter = require("./routes/api/dashboards");
+const columnRouter = require("./routes/api/column");
+const cardRouter = require("./routes/api/card");
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 
 app.use("/api/users", authRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/column", columnRouter);
+app.use("/api/card", cardRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found on 3000" });

@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const MongooseError = require('../helpers/MongooseError');
+const MongooseError = require("../helpers/MongooseError");
 
 const columnSchema = new Schema(
   {
@@ -13,15 +13,15 @@ const columnSchema = new Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'dashboard',
+      ref: "dashboard",
       required: true,
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-// columnSchema.post('save', MongooseError);
+columnSchema.post("save", MongooseError);
 
-const Column = model('column', columnSchema);
+const Column = model("column", columnSchema);
 
 module.exports = Column;
