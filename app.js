@@ -17,12 +17,15 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", authRouter);
+
 app.use("/api/dashboard", dashboardRouter);
+
 app.use("/api/column", columnRouter);
+
 app.use("/api/card", cardRouter);
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Not found on 3000" });
+  res.status(404).json({ message: "Not found on 3007" });
 });
 
 app.use((err, req, res, next) => {

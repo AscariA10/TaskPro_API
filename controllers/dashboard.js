@@ -2,6 +2,7 @@ const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
 const Dashboard = require("../models/dashboard");
 const Column = require("../models/column");
+const Card = require("../models/card");
 
 async function getAll(req, res) {
   const { _id: owner } = req.user;
@@ -16,8 +17,7 @@ async function getById(req, res) {
 
   if (!result) throw HttpError(404);
   res.json({
-    dashboard: result,
-    columns,
+    dashboard: { result, columns },
   });
 }
 
