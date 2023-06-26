@@ -1,7 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-const Joi = require("joi");
-
 const MongooseError = require("../helpers/MongooseError");
 
 const emailRegExp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -29,7 +27,9 @@ const userSchema = new Schema(
       enum: ["light", "dark", "violet"],
       default: "violet",
     },
-    // avatarURL: { type: String },
+
+    avatarURL: { type: String },
+
     token: {
       type: String,
       default: null,
@@ -40,23 +40,6 @@ const userSchema = new Schema(
 
 userSchema.post("save", MongooseError);
 
-const registerSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().pattern(emailRegExp).required(),
-  password: Joi.string().min(6).required(),
-});
-
-const loginSchema = Joi.object({
-  email: Joi.string().pattern(emailRegExp).required(),
-  password: Joi.string().min(6).required(),
-});
-
-const themeSchema = Joi.object({
-  theme: Joi.string().valid("light", "dark", "violet").required(),
-});
-
-const schemas = { registerSchema, loginSchema, themeSchema };
-
 const User = model("user", userSchema);
 
-module.exports = { User, schemas };
+module.exports = User;
