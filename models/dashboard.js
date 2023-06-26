@@ -24,7 +24,7 @@ const dashboardSchema = new Schema(
       required: true,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true, strictPopulate: false }
 );
 
 dashboardSchema.post("save", MongooseError);
