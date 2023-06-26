@@ -11,7 +11,10 @@
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3007" }],
+  "servers": [
+    { "url": "http://localhost:3007" },
+    { "url": "https://taskproapi-ukbi.onrender.com" }
+  ],
   "tags": [
     {
       "name": "Authetification",
