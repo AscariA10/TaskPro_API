@@ -1,10 +1,5 @@
 const express = require("express");
-const {
-  getById,
-  updateById,
-  addNew,
-  removeById,
-} = require("../../controllers/card");
+const { getById, updateById, addNew, removeById } = require("../../controllers/card");
 
 const router = express.Router();
 
