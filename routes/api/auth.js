@@ -16,9 +16,13 @@ const uploadCloud = require("../../middlewares/uploadMiddlewares");
 const router = express.Router();
 
 router.post("/register", validateBody(schemas.registerSchema), register);
+
 router.post("/login", validateBody(schemas.loginSchema), login);
+
 router.get("/current", authenticate, getCurrent);
+
 router.post("/logout", authenticate, logout);
+
 router.patch(
   "/theme",
   authenticate,
@@ -32,4 +36,5 @@ router.put(
   validateBody(schemas.userSchema),
   updateProfile
 );
+
 module.exports = router;

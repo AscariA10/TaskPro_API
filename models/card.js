@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const MongooseError = require('../helpers/MongooseError');
+const MongooseError = require("../helpers/MongooseError");
 
 const cardSchema = new Schema(
   {
@@ -13,12 +13,12 @@ const cardSchema = new Schema(
     },
     priority: {
       type: String,
-      enum: ['no-priority', 'low', 'medium', 'high'],
-      default: 'no-priority',
+      enum: ["no-priority", "low", "medium", "high"],
+      default: "no-priority",
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'column',
+      ref: "column",
       required: true,
     },
     deadline: {
@@ -28,8 +28,8 @@ const cardSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// cardSchema.post('save', MongooseError);
+cardSchema.post("save", MongooseError);
 
-const Card = model('card', cardSchema);
+const Card = model("card", cardSchema);
 
 module.exports = Card;

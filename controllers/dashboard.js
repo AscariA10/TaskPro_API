@@ -1,6 +1,8 @@
 const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
 const Dashboard = require("../models/dashboard");
+const Column = require("../models/column");
+const Card = require("../models/card");
 
 async function getAll(req, res) {
   const { _id: owner } = req.user;
@@ -9,10 +11,14 @@ async function getAll(req, res) {
 }
 
 async function getById(req, res) {
-  const { _id: dashboardId } = req.params;
+  const { dashboardId } = req.params;
   const result = await Dashboard.findById(dashboardId);
+  const columns = await Column.find({ owner: result._id });
+
   if (!result) throw HttpError(404);
-  res.json(result);
+  res.json({
+    dashboard: { result, columns },
+  });
 }
 
 async function addNew(req, res) {
@@ -22,14 +28,14 @@ async function addNew(req, res) {
 }
 
 async function removeById(req, res) {
-  const { _id: dashboardId } = req.params;
+  const { dashboardId } = req.params;
   const result = await Dashboard.findByIdAndRemove(dashboardId);
   if (!result) throw HttpError(404);
   res.json({ message: "Board was deleted." });
 }
 
 async function updateById(req, res) {
-  const { _id: dashboardId } = req.params;
+  const { dashboardId } = req.params;
   const result = await Dashboard.findByIdAndUpdate(dashboardId, req.body, {
     new: true,
   });
