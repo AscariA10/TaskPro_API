@@ -153,12 +153,12 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Registration's object",
+          "description": "Logout object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "$ref": "#/components/schemas/LogoutRequest"
               }
             }
           }
@@ -169,23 +169,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/LogoutResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "409": {
-            "description": "Provided email already exists",
+          "401": {
+            "description": "Not authorized",
             "content": {}
           }
         }
       }
     },
-    "/api/users/": {
+    "/api/users/theme": {
       "patch": {
         "tags": ["Authetification"],
         "summary": "changing theme of app",
@@ -197,7 +193,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "$ref": "#/components/schemas/ThemeRequest"
               }
             }
           }
@@ -208,7 +204,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/ThemeResponse"
                 }
               }
             }
@@ -217,8 +213,47 @@
             "description": "Bad request (invalid request body)",
             "content": {}
           },
-          "409": {
-            "description": "Provided email already exists",
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/profile": {
+      "put": {
+        "tags": ["Authetification"],
+        "summary": "change user data",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Profile object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
             "content": {}
           }
         }
@@ -317,6 +352,88 @@
             "type": "string",
             "description": "color-theme",
             "example": "violet"
+          }
+        }
+      },
+      "LogoutRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LogoutResponse": {},
+      "ThemeRequest": {
+        "type": "object",
+        "required": ["theme"],
+        "properties": {
+          "theme": { "type": "string", "description": "theme-color" }
+        }
+      },
+      "ThemeResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yulet"
+          },
+          "name": { "type": "string", "description": "name", "example": "user-name" },
+          "email": { "type": "string", "description": "email@email.com" },
+          "password": { "type": "string", "description": "hashed password" },
+          "theme": { "type": "string", "description": "theme-color" },
+          "token": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "ProfileRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "ProfileResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yulet"
+          },
+          "name": { "type": "string", "description": "name", "example": "user-name" },
+          "email": { "type": "string", "description": "email@email.com" },
+          "password": { "type": "string", "description": "hashed password" },
+          "theme": { "type": "string", "description": "theme-color" },
+          "token": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
           }
         }
       }
