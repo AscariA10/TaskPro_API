@@ -14,14 +14,26 @@
   "servers": [{ "url": "http://localhost:3007" }],
   "tags": [
     {
-      "name": "Auth",
+      "name": "Authetification",
       "description": "Authorization endpoints"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Dashboard endpoints"
+    },
+    {
+      "name": "Column",
+      "description": "Column endpoints"
+    },
+    {
+      "name": "Card",
+      "description": "Card endpoints"
     }
   ],
   "paths": {
     "/api/users/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Authetification"],
         "summary": "User registration",
         "parameters": [],
         "requestBody": {
@@ -59,7 +71,7 @@
     },
     "/api/users/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Authetification"],
         "summary": "User logIn",
         "parameters": [],
         "requestBody": {
@@ -68,7 +80,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           }
@@ -79,7 +91,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/LoginResponse"
                 }
               }
             }
@@ -97,7 +109,7 @@
     },
     "/api/users/current": {
       "get": {
-        "tags": ["Auth"],
+        "tags": ["Authetification"],
         "summary": "User check",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -107,7 +119,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "$ref": "#/components/schemas/CurrentRequest"
               }
             }
           }
@@ -118,7 +130,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/CurrentResponse"
                 }
               }
             }
@@ -136,7 +148,7 @@
     },
     "/api/users/logout": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Authetification"],
         "summary": "User logout",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -175,7 +187,7 @@
     },
     "/api/users/": {
       "patch": {
-        "tags": ["Auth"],
+        "tags": ["Authetification"],
         "summary": "changing theme of app",
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -226,7 +238,7 @@
           "email": {
             "type": "string",
             "description": "User's email",
-            "format": "email"
+            "format": "email@email.com"
           },
           "password": {
             "type": "string",
@@ -236,26 +248,77 @@
         }
       },
       "RegistrationResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
-            }
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
           }
         },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
+        "example": [{ "email": "1@gmail.com" }]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "description": "email@email.com" },
+          "password": { "type": "string", "description": "secret-password" }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "token",
+            "example": "qwerty123"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string", "description": "name", "example": "user-name" },
+              "theme": { "type": "string", "description": "theme", "example": "violet" }
+            }
+          }
+        }
+      },
+      "CurrentRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name",
+            "example": "User-name"
+          },
+          "email": {
+            "type": "string",
+            "description": "name",
+            "example": "email@email.com",
+            "format": "email@email.com"
+          },
+          "theme": {
+            "type": "string",
+            "description": "color-theme",
+            "example": "violet"
+          }
+        }
       }
     },
     "securitySchemes": {
