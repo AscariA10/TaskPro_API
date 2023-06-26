@@ -424,7 +424,7 @@
           "_id": {
             "type": "string",
             "description": "id from DB",
-            "example": "viodghfj5435346yulet"
+            "example": "viodghfj5435346yuletsd"
           },
           "name": { "type": "string", "description": "name", "example": "user-name" },
           "email": { "type": "string", "description": "email@email.com" },
