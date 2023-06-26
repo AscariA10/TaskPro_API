@@ -6,6 +6,7 @@ const {
   logout,
   updateTheme,
   updateProfile,
+  getHelpEmail
 } = require("../../controllers/auth");
 
 const validateBody = require("../../middlewares/validateBody");
@@ -36,5 +37,6 @@ router.put(
   validateBody(schemas.userSchema),
   updateProfile
 );
+router.post('/help', authenticate, validateBody(schemas.helpSchema), getHelpEmail)
 
 module.exports = router;
