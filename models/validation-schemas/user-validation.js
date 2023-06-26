@@ -22,7 +22,11 @@ const userSchema = Joi.object({
   email: Joi.string().pattern(emailRegExp),
   password: Joi.string().min(6),
 });
+const helpSchema = Joi.object({
+  email: Joi.string().pattern(emailRegExp).required(),
+  comment: Joi.string(),
+});
 
-const schemas = { registerSchema, loginSchema, themeSchema, userSchema };
+const schemas = { registerSchema, loginSchema, themeSchema, userSchema, helpSchema };
 
 module.exports = schemas;

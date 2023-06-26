@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const HttpError = require("../helpers/HttpError");
+const sendEmail = require("../helpers/sendEmail")
 const controllerWrapper = require("../helpers/decorators");
 
 const { JWT_TOKEN_KEY } = process.env;
@@ -123,7 +124,26 @@ async function updateProfile(req, res) {
   );
   res.json(result);
 }
+async function getHelpEmail(req, res) {
+  const { email, comment } = req.body;
 
+  const helpReq = {
+    to: "taskpro.project@gmail.com",
+    subject: "User need help",
+    html: `<p> Email: ${email}, Comment: ${comment}</p>`
+  }
+  await sendEmail(helpReq);
+  const helpRes = {
+    to: email,
+    subject: "Support",
+    html: `<p>Thank you for you request! We will consider your comment ${comment}</p>`
+  };
+  await sendEmail(helpRes);
+
+  res.json({
+    message: "Reply email sent"
+  })
+}
 module.exports = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
@@ -131,4 +151,5 @@ module.exports = {
   logout: controllerWrapper(logout),
   updateTheme: controllerWrapper(updateTheme),
   updateProfile: controllerWrapper(updateProfile),
+  getHelpEmail: controllerWrapper(getHelpEmail),
 };
