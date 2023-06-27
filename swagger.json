@@ -448,6 +448,140 @@
           }
         }
       }
+    },
+    "/api/column/{dashboardId}": {
+      "post": {
+        "tags": ["Column"],
+        "summary": "adding new column to dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "put title to new column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewColumnToDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewColumnToDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/column/{columnId}": {
+      "get": {
+        "tags": ["Column"],
+        "summary": "get all columns` cards",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllCardsFromColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Column"],
+        "summary": "change info about column",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "change info about column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeColumnTitleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeColumnTitleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Column"],
+        "summary": "delete column",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteColumnResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -655,9 +789,6 @@
           }
         }
       },
-      "AddNewDashboardRequest": {
-        "type": "string"
-      },
       "AddNewDashboardResponse": {
         "type": "object",
         "properties": {
@@ -758,6 +889,105 @@
             "type": "string",
             "description": "Board was deleted.",
             "example": "Board was deleted."
+          }
+        }
+      },
+      "AddNewColumnToDashboardRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "AddNewColumnToDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "owner": { "type": "string", "description": "owner" },
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "GetAllCardsFromColumnResponse": {
+        "type": "object",
+        "properties": {
+          "column": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "id from DB",
+                "example": "viodghfj5435346yuletsd"
+              },
+              "owner": { "type": "string", "description": "owner id from DB" },
+              "title": { "type": "string", "description": "title", "example": "title" }
+            }
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "id from DB",
+                  "example": "viodghfj5435346yuletsd"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "card title",
+                  "example": "card-title"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "column owner",
+                  "example": "DB-column-ID"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["no-priority", "low", "medium", "high"],
+                  "description": "column is owner"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ChangeColumnTitleRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" }
+        }
+      },
+      "ChangeColumnTitleResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "title",
+            "example": "column-title"
+          },
+          "owner": {
+            "type": "string",
+            "description": "owner",
+            "example": "DB-column-ID"
+          }
+        }
+      },
+      "DeleteColumnResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Column was deleted.",
+            "example": "Column was deleted."
           }
         }
       }
