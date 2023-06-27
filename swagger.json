@@ -582,6 +582,184 @@
           }
         }
       }
+    },
+    "/api/card/{columnId}": {
+      "post": {
+        "tags": ["Card"],
+        "summary": "adding new card to column",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "put new card to column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewCardToColumnRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewCardToColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/card/{cardId}": {
+      "get": {
+        "tags": ["Card"],
+        "summary": "change card column",
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCardInformationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Card"],
+        "summary": "update card information",
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "change info about card",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCardInformationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCardInformationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Card"],
+        "summary": "delete card",
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCardResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/{cardId}/owner/{columnId}": {
+      "patch": {
+        "tags": ["Card"],
+        "summary": "get full card information",
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "columnId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateColumnResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
     }
   },
   "components": {
@@ -988,6 +1166,179 @@
             "type": "string",
             "description": "Column was deleted.",
             "example": "Column was deleted."
+          }
+        }
+      },
+      "AddNewCardToColumnRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "deadline": { "type": "date", "description": "date", "example": "12-12-2023" }
+        }
+      },
+      "AddNewCardToColumnResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetCardInformationResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateCardInformationRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "title", "example": "title" },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateCardInformationResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateColumnResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "title": {
+            "type": "string",
+            "description": "card title",
+            "example": "card-title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "owner": {
+            "type": "string",
+            "description": "column owner",
+            "example": "DB-column-ID"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["no-priority", "low", "medium", "high"],
+            "description": "column is owner"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DeleteCardResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Card was deleted.",
+            "example": "Card was deleted."
           }
         }
       }
