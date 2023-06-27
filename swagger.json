@@ -261,6 +261,193 @@
           }
         }
       }
+    },
+    "/api/dashboard": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get all dashboards for current user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Getting all dashboards",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAllDashboardsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllDashboardsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Dashboard"],
+        "summary": "adding new dashboard",
+        "parameters": [],
+        "requestBody": {
+          "description": "add new dashboard",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNewDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNewDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided dashboard already exist",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/dashboard/{dashboardId}": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "Get dashboard by ID",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllColumnsInDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Dashboard"],
+        "summary": "Change info about dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Change info about dashboard",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeInfoAboutDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeInfoAboutDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Dashboard"],
+        "summary": "Delete dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
     }
   },
   "components": {
@@ -437,6 +624,140 @@
             "type": "string",
             "description": "token",
             "example": "qwerty123"
+          }
+        }
+      },
+      "GetAllDashboardsRequest": {},
+      "GetAllDashboardsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "id from DB",
+              "example": "viodghfj5435346yuletsd"
+            },
+            "name": {
+              "type": "string",
+              "description": "name",
+              "example": "User-name"
+            },
+            "backgroundURL": {
+              "type": "string",
+              "description": "URL"
+            },
+            "owner": {
+              "type": "string",
+              "description": "owner",
+              "example": "DB-user-ID"
+            }
+          }
+        }
+      },
+      "AddNewDashboardRequest": {
+        "type": "string"
+      },
+      "AddNewDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "backgroundURL": { "type": "string", "description": "backgroundURL" },
+          "owner": { "type": "string", "description": "owner" },
+          "name": { "type": "string", "description": "name", "example": "user-name" }
+        }
+      },
+      "GetAllColumnsInDashboardRequest": {},
+      "GetAllColumnsInDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "dashboard": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "id from DB",
+                "example": "viodghfj5435346yuletsd"
+              },
+              "backgroundURL": { "type": "string", "description": "backgroundURL" },
+              "owner": { "type": "string", "description": "owner" },
+              "name": { "type": "string", "description": "name", "example": "user-name" }
+            }
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "id from DB",
+                  "example": "viodghfj5435346yuletsd"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "column title",
+                  "example": "column-title"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "dashboard is owner",
+                  "example": "DB-dashboard-ID"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ChangeInfoAboutDashboardRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "backgroundURL": {
+            "type": "string",
+            "description": "Image"
+          }
+        }
+      },
+      "ChangeInfoAboutDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "name": {
+            "type": "string",
+            "description": "name",
+            "example": "User-name"
+          },
+          "backgroundURL": {
+            "type": "string",
+            "description": "URL"
+          },
+          "owner": {
+            "type": "string",
+            "description": "owner",
+            "example": "DB-user-ID"
+          }
+        }
+      },
+      "DeleteDashboardRequest": {},
+      "DeleteDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Board was deleted.",
+            "example": "Board was deleted."
           }
         }
       }

@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   getById,
   updateById,
@@ -7,6 +8,7 @@ const {
   setNewCardOwner,
 } = require("../../controllers/card");
 const authenticate = require("../../middlewares/authenticate");
+
 
 const router = express.Router();
 
