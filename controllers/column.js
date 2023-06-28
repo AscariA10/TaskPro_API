@@ -24,7 +24,7 @@ async function removeById(req, res) {
   const { columnId } = req.params;
   const result = await Column.findByIdAndRemove(columnId);
   if (!result) throw HttpError(404);
-  res.json({ message: "Column was deleted." });
+  res.json(result);
 }
 
 async function updateById(req, res) {
