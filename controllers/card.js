@@ -11,7 +11,10 @@ async function getById(req, res) {
 
 async function addNew(req, res) {
   const { columnId } = req.params;
-  const result = await Card.create({ ...req.body, owner: columnId });
+  const result = await Card.create({
+    ...req.body,
+    owner: columnId,
+  });
   res.status(201).json(result);
 }
 
@@ -31,9 +34,23 @@ async function updateById(req, res) {
   res.json(result);
 }
 
+async function setNewCardOwner(req, res) {
+  const { cardId, columnId } = req.params;
+  const result = await Card.findByIdAndUpdate(
+    cardId,
+    { owner: columnId },
+    {
+      new: true,
+    }
+  );
+  if (!result) throw HttpError(404);
+  res.json(result);
+}
+
 module.exports = {
   getById: controllerWrapper(getById),
   addNew: controllerWrapper(addNew),
   removeById: controllerWrapper(removeById),
   updateById: controllerWrapper(updateById),
+  setNewCardOwner: controllerWrapper(setNewCardOwner),
 };

@@ -5,18 +5,22 @@ const Column = require("../models/column");
 
 async function getById(req, res) {
   const { columnId } = req.params;
-  const result = await Column.findById(columnId);
-  const cards = await Card.find({ owner: result._id });
-  if (!result) throw HttpError(404);
+  const column = await Column.findById(columnId);
+  if (!column) throw HttpError(404);
+  const cards = await Card.find({ owner: column._id });
+  if (!cards) throw HttpError(404);
   res.json({
-    column: result,
+    column,
     cards,
   });
 }
 
 async function addNew(req, res) {
   const { dashboardId } = req.params;
-  const result = await Column.create({ ...req.body, owner: dashboardId });
+  const result = await Column.create({
+    ...req.body,
+    owner: dashboardId,
+  });
   res.status(201).json(result);
 }
 

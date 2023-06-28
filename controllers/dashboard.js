@@ -11,12 +11,14 @@ async function getAll(req, res) {
 
 async function getById(req, res) {
   const { dashboardId } = req.params;
-  const result = await Dashboard.findById(dashboardId);
-  const columns = await Column.find({ owner: result._id });
+  const dashboard = await Dashboard.findById(dashboardId);
+  if (!dashboard) throw HttpError(404);
+  const columns = await Column.find({ owner: dashboard._id });
+  if (!columns) throw HttpError(404);
 
-  if (!result) throw HttpError(404);
   res.json({
-    dashboard: { result, columns },
+    dashboard,
+    columns,
   });
 }
 
