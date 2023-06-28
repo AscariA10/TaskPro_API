@@ -17,6 +17,7 @@ const dashboardSchema = new Schema(
     },
     icon: {
       type: String,
+      default: "",
     },
     owner: {
       type: Schema.Types.ObjectId,

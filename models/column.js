@@ -8,9 +8,9 @@ const columnSchema = new Schema(
       type: String,
       required: true,
     },
-    icon: {
-      type: String,
-    },
+    // icon: {
+    //   type: String,
+    // },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "dashboard",

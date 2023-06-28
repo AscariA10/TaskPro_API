@@ -13,8 +13,8 @@ const cardSchema = new Schema(
     },
     priority: {
       type: String,
-      enum: ["no-priority", "low", "medium", "high"],
-      default: "no-priority",
+      enum: ["without", "low", "medium", "high"],
+      default: "without",
     },
     owner: {
       type: Schema.Types.ObjectId,
