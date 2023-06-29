@@ -6,7 +6,7 @@ const {
   logout,
   updateTheme,
   updateProfile,
-  getHelpEmail
+  getHelpEmail,
 } = require("../../controllers/auth");
 
 const validateBody = require("../../middlewares/validateBody");
@@ -34,9 +34,14 @@ router.put(
   "/profile",
   authenticate,
   uploadCloud.single("avatarURL"),
-  validateBody(schemas.userSchema),
+  validateBody(schemas.registerSchema),
   updateProfile
 );
-router.post('/help', authenticate, validateBody(schemas.helpSchema), getHelpEmail)
+router.post(
+  "/help",
+  authenticate,
+  validateBody(schemas.helpSchema),
+  getHelpEmail
+);
 
 module.exports = router;
