@@ -17,13 +17,30 @@ async function getById(req, res) {
   const columns = await Column.find({ owner: dashboard._id });
   if (!columns) throw HttpError(404);
 
-  const ArrayColumnsIds = columns.map((column) => column._id);
+  const ArrayColumnsIds = columns.map(column => column._id);
   const cards = await Card.where("owner").in(ArrayColumnsIds).exec();
 
-  res.json({
+  // experiment
+
+  const dashboardColumns = ArrayColumnsIds.map(element => {
+    return {
+      column: element,
+      cards: cards.filter(card => {
+        return card.owner.toString() === element.toString();
+      }),
+    };
+  });
+  const result = {
     dashboard,
-    columns,
-    cards,
+    dashboardColumns,
+  };
+  // experiment
+
+  res.json({
+    result,
+    // dashboard,
+    // columns,
+    // cards,
   });
 }
 
