@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const HttpError = require("../helpers/HttpError");
-const sendEmail = require("../helpers/sendEmail")
+const sendEmail = require("../helpers/sendEmail");
 const controllerWrapper = require("../helpers/decorators");
 
 const { JWT_TOKEN_KEY } = process.env;
@@ -13,12 +13,12 @@ async function register(req, res) {
   if (user) {
     throw HttpError(409, "Email in use");
   }
-  const hashdPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
   const avatarURL = "";
 
   const newUser = await User.create({
     ...req.body,
-    password: hashdPassword,
+    password: hashedPassword,
     avatarURL,
   });
 
@@ -46,8 +46,11 @@ async function login(req, res) {
   res.status(200).json({
     token,
     user: {
+      _id: user._id,
       name: user.name,
+      email: user.email,
       theme: user.theme,
+      avatarURL: user.avatarURL,
     },
   });
 }
@@ -69,80 +72,91 @@ async function logout(req, res) {
 
 async function updateTheme(req, res) {
   const { _id } = req.user;
-  const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
+  const result = await User.findByIdAndUpdate(_id, req.body, {
+    new: true,
+    select: "-password -createdAt -updatedAt",
+  });
   res.json(result);
 }
 
 async function updateProfile(req, res) {
   const { _id } = req.user;
 
-  if (!req.file && !req.body.password) {
-    const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
-    res.json(result);
-    return;
-  }
+  //   if (!req.file && !req.body.name && !req.body.email && !req.body.password) {
+  //     throw HttpError(400, "Enter the data for changes");
+  //   }
 
-  if (!req.body.password) {
-    const upload = req.file.path;
-    const result = await User.findByIdAndUpdate(
-      _id,
-      {
-        ...req.body,
-        avatarURL: upload,
-      },
-      { new: true }
-    );
-    res.json(result);
-    return;
-  }
+  //   if (!req.file && !req.body.password) {
+  //     const result = await User.findByIdAndUpdate(_id, req.body, {
+  //       new: true,
+  //       select: "-password -createdAt -updatedAt",
+  //     });
+  //     res.json(result);
+  //     return;
+  //   }
+
+  //   if (!req.body.password) {
+  //     const upload = req.file.path;
+  //     const result = await User.findByIdAndUpdate(
+  //       _id,
+  //       {
+  //         ...req.body,
+  //         avatarURL: upload,
+  //       },
+  //       { new: true, select: "-password -createdAt -updatedAt" }
+  //     );
+  //     res.json(result);
+  //     return;
+  //   }
 
   if (!req.file) {
-    const hashdPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const result = await User.findByIdAndUpdate(
       _id,
       {
         ...req.body,
-        password: hashdPassword,
+        password: hashedPassword,
       },
-      { new: true }
+      { new: true, select: "-password -createdAt -updatedAt" }
     );
     res.json(result);
     return;
   }
 
-  const hashdPassword = await bcrypt.hash(req.body.password, 10);
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const upload = req.file.path;
 
   const result = await User.findByIdAndUpdate(
     _id,
     {
       ...req.body,
-      password: hashdPassword,
+      password: hashedPassword,
       avatarURL: upload,
     },
-    { new: true }
+    { new: true, select: "-password -createdAt -updatedAt" }
   );
   res.json(result);
 }
+
 async function getHelpEmail(req, res) {
   const { email, comment } = req.body;
 
   const helpReq = {
     to: "taskpro.project@gmail.com",
     subject: "User need help",
-    html: `<p> Email: ${email}, Comment: ${comment}</p>`
-  }
+    html: `<p> Email: ${email}, Comment: ${comment}</p>`,
+  };
   await sendEmail(helpReq);
   const helpRes = {
     to: email,
     subject: "Support",
-    html: `<p>Thank you for you request! We will consider your comment ${comment}</p>`
+    html: `<p>Thank you for you request! We will consider your comment ${comment}</p>`,
   };
   await sendEmail(helpRes);
 
   res.json({
-    message: "Reply email sent"
-  })
+    message: "Reply email sent",
+  });
 }
 module.exports = {
   register: controllerWrapper(register),
