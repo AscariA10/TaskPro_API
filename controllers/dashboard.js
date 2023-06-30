@@ -2,6 +2,7 @@ const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
 const Dashboard = require("../models/dashboard");
 const Column = require("../models/column");
+const Card = require("../models/card");
 
 async function getAll(req, res) {
   const { _id: owner } = req.user;
@@ -16,9 +17,13 @@ async function getById(req, res) {
   const columns = await Column.find({ owner: dashboard._id });
   if (!columns) throw HttpError(404);
 
+  const ArrayColumnsIds = columns.map((column) => column._id);
+  const cards = await Card.where("owner").in(ArrayColumnsIds).exec();
+
   res.json({
     dashboard,
     columns,
+    cards,
   });
 }
 
