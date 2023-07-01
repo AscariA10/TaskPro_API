@@ -14,7 +14,8 @@ async function getById(req, res) {
   const { dashboardId } = req.params;
   const dashboard = await Dashboard.findById(dashboardId);
   const columns = await Column.find({ owner: dashboard._id });
-  const columnsWithOwnCards = await Column.aggregate([
+
+  const columnsWithOwnCards = await columns.length && Column.aggregate([
     {
       $match: { $or: columns },
     },
@@ -27,11 +28,11 @@ async function getById(req, res) {
       },
     },
   ]);
-  if (!dashboard || !columns || !columnsWithOwnCards) throw HttpError(404);
+  if (!dashboard ) throw HttpError(404);
 
   res.json({
     dashboard,
-    columns: columnsWithOwnCards,
+    columns: columnsWithOwnCards || [],
   });
 }
 
