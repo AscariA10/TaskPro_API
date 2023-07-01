@@ -881,21 +881,20 @@
       "CurrentResponse": {
         "type": "object",
         "properties": {
-          "name": {
+          "token": {
             "type": "string",
-            "description": "name",
-            "example": "User-name"
+            "description": "token",
+            "example": "qwerty123"
           },
-          "email": {
-            "type": "string",
-            "description": "name",
-            "example": "email@email.com",
-            "format": "email@email.com"
-          },
-          "theme": {
-            "type": "string",
-            "description": "color-theme",
-            "example": "violet"
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": { "type": "string", "description": "DB user id" },
+              "email": { "type": "string", "description": "email@email.com" },
+              "name": { "type": "string", "description": "name", "example": "user-name" },
+              "avatarURL": { "type": "string", "description": "avatar address on cloudinary" },
+              "theme": { "type": "string", "description": "theme", "example": "violet" }
+            }
           }
         }
       },
