@@ -262,6 +262,45 @@
         }
       }
     },
+    "/api/users/help": {
+      "put": {
+        "tags": ["Authetification"],
+        "summary": "change user data",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User's email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetHelpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHelpResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/dashboard": {
       "get": {
         "tags": ["Dashboard"],
@@ -942,6 +981,25 @@
           }
         }
       },
+      "GetHelpRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email@email.com"
+          }
+        }
+      },
+      "GetHelpResponse":{
+        "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example":"Reply email sent"
+        }
+      }},
       "GetAllDashboardsRequest": {},
       "GetAllDashboardsResponse": {
         "type": "array",
