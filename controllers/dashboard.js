@@ -2,7 +2,6 @@ const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
 const Dashboard = require("../models/dashboard");
 const Column = require("../models/column");
-const Card = require("../models/card");
 
 async function getAll(req, res) {
   const { _id: owner } = req.user;
@@ -16,14 +15,24 @@ async function getById(req, res) {
   if (!dashboard) throw HttpError(404);
   const columns = await Column.find({ owner: dashboard._id });
   if (!columns) throw HttpError(404);
-
-  const ArrayColumnsIds = columns.map((column) => column._id);
-  const cards = await Card.where("owner").in(ArrayColumnsIds).exec();
+  const columnsWithOwnCards = await Column.aggregate([
+    {
+      $match: { $or: columns },
+    },
+    {
+      $lookup: {
+        from: "cards",
+        localField: "_id",
+        foreignField: "owner",
+        as: "cards",
+      },
+    },
+  ]);
+  if (!columnsWithOwnCards) throw HttpError(404);
 
   res.json({
     dashboard,
-    columns,
-    cards,
+    columns: columnsWithOwnCards,
   });
 }
 
