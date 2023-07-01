@@ -2,6 +2,7 @@ const HttpError = require("../helpers/HttpError");
 const controllerWrapper = require("../helpers/decorators");
 const Dashboard = require("../models/dashboard");
 const Column = require("../models/column");
+const Card = require("../models/card");
 
 async function getAll(req, res) {
   const { _id: owner } = req.user;
@@ -12,9 +13,7 @@ async function getAll(req, res) {
 async function getById(req, res) {
   const { dashboardId } = req.params;
   const dashboard = await Dashboard.findById(dashboardId);
-  if (!dashboard) throw HttpError(404);
   const columns = await Column.find({ owner: dashboard._id });
-  if (!columns) throw HttpError(404);
   const columnsWithOwnCards = await Column.aggregate([
     {
       $match: { $or: columns },
@@ -28,7 +27,7 @@ async function getById(req, res) {
       },
     },
   ]);
-  if (!columnsWithOwnCards) throw HttpError(404);
+  if (!dashboard || !columns || !columnsWithOwnCards) throw HttpError(404);
 
   res.json({
     dashboard,
@@ -44,9 +43,18 @@ async function addNew(req, res) {
 
 async function removeById(req, res) {
   const { dashboardId } = req.params;
-  const result = await Dashboard.findByIdAndRemove(dashboardId);
-  if (!result) throw HttpError(404);
-  res.json(result);
+  const deletedBoard = await Dashboard.findByIdAndRemove(dashboardId);
+  const columns = await Column.find({ owner: dashboardId });
+  const deletedColumn = await Column.deleteMany({ owner: dashboardId });
+  const ArrayColumnsIds = columns.map((column) => column._id);
+  const deletedCard = await Card.deleteMany({ owner: ArrayColumnsIds });
+  if (!deletedBoard || !deletedColumn || !deletedCard || !columns)
+    throw HttpError(404);
+  res.json({
+    deletedBoard,
+    deletedColumn,
+    deletedCard,
+  });
 }
 
 async function updateById(req, res) {
