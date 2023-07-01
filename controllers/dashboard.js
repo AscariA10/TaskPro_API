@@ -15,25 +15,32 @@ async function getById(req, res) {
   const dashboard = await Dashboard.findById(dashboardId);
   const columns = await Column.find({ owner: dashboard._id });
 
-  const columnsWithOwnCards = await columns.length && Column.aggregate([
-    {
-      $match: { $or: columns },
-    },
-    {
-      $lookup: {
-        from: "cards",
-        localField: "_id",
-        foreignField: "owner",
-        as: "cards",
+  if(columns.length>0){
+    const columnsWithOwnCards = await Column.aggregate([
+      {
+        $match: { $or: columns },
       },
-    },
-  ]);
-  if (!dashboard ) throw HttpError(404);
-
+      {
+        $lookup: {
+          from: "cards",
+          localField: "_id",
+          foreignField: "owner",
+          as: "cards",
+        },
+      },
+    ]);
+    if (!dashboard ) throw HttpError(404);
+  
+    res.json({
+      dashboard,
+      columns: columnsWithOwnCards,
+    });
+  }
   res.json({
     dashboard,
-    columns: columnsWithOwnCards || [],
+    columns: [],
   });
+ 
 }
 
 async function addNew(req, res) {
