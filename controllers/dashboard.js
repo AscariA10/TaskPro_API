@@ -13,34 +13,25 @@ async function getAll(req, res) {
 async function getById(req, res) {
   const { dashboardId } = req.params;
   const dashboard = await Dashboard.findById(dashboardId);
-  if (!dashboard) throw HttpError(404);
   const columns = await Column.find({ owner: dashboard._id });
-  if (!columns) throw HttpError(404);
-
-  const ArrayColumnsIds = columns.map(column => column._id);
-  const cards = await Card.where("owner").in(ArrayColumnsIds).exec();
-
-  // experiment
-
-  const dashboardColumns = ArrayColumnsIds.map(element => {
-    return {
-      column: element,
-      cards: cards.filter(card => {
-        return card.owner.toString() === element.toString();
-      }),
-    };
-  });
-  const result = {
-    dashboard,
-    dashboardColumns,
-  };
-  // experiment
+  const columnsWithOwnCards = await Column.aggregate([
+    {
+      $match: { $or: columns },
+    },
+    {
+      $lookup: {
+        from: "cards",
+        localField: "_id",
+        foreignField: "owner",
+        as: "cards",
+      },
+    },
+  ]);
+  if (!dashboard || !columns || !columnsWithOwnCards) throw HttpError(404);
 
   res.json({
-    result,
-    // dashboard,
-    // columns,
-    // cards,
+    dashboard,
+    columns: columnsWithOwnCards,
   });
 }
 
@@ -56,12 +47,13 @@ async function removeById(req, res) {
   const columns = await Column.find({ owner: dashboardId });
   const deletedColumn = await Column.deleteMany({ owner: dashboardId });
   const ArrayColumnsIds = columns.map((column) => column._id);
-  const deletedCard = await Card.deleteMany({ owner: ArrayColumnsIds })
-  if (!deletedBoard || !deletedColumn || !deletedCard || !columns) throw HttpError(404);
+  const deletedCard = await Card.deleteMany({ owner: ArrayColumnsIds });
+  if (!deletedBoard || !deletedColumn || !deletedCard || !columns)
+    throw HttpError(404);
   res.json({
     deletedBoard,
     deletedColumn,
-    deletedCard
+    deletedCard,
   });
 }
 
