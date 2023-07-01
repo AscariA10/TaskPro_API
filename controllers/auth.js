@@ -56,11 +56,16 @@ async function login(req, res) {
 }
 
 async function getCurrent(req, res) {
-  const { name, email, theme } = req.user;
+  const { _id, name, email, theme, token, avatarURL } = req.user;
   res.json({
-    name,
-    email,
-    theme,
+    token,
+    user: {
+      _id,
+      name,
+      email,
+      theme,
+      avatarURL,
+    },
   });
 }
 
