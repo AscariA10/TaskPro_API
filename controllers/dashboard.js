@@ -74,10 +74,18 @@ async function updateById(req, res) {
   res.json(result);
 }
 
+async function updateCurrentDashboard(req, res){
+  const { dashboardId } = req.params;
+  const result = await Dashboard.findByIdAndUpdate(dashboardId, {...req.body}, {new:true})
+  if (!result) throw HttpError(404);
+  res.json(result);
+}
+
 module.exports = {
   getAll: controllerWrapper(getAll),
   getById: controllerWrapper(getById),
   addNew: controllerWrapper(addNew),
   removeById: controllerWrapper(removeById),
   updateById: controllerWrapper(updateById),
+  updateCurrentDashboard: controllerWrapper(updateCurrentDashboard)
 };

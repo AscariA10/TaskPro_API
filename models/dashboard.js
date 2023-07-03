@@ -19,11 +19,11 @@ const dashboardSchema = new Schema(
       type: String,
       default: "",
     },
-    // currentDashboard:{
-    //   type: Boolean,
-    //   default: false,
-    //  required:true,
-    // },
+    currentDashboard:{
+      type: Boolean,
+      default: false,
+      required:true,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",

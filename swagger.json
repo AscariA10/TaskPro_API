@@ -455,6 +455,52 @@
           }
         }
       },
+      "patch":{
+        "tags": ["Dashboard"],
+        "summary": "Change current status of Dashboard",
+        "parameters": [
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Change info about dashboard",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeCurrentStatusOfDashboardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeCurrentStatusOfDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404":{
+            "description":"Not found"
+          }
+        }
+      },
       "delete": {
         "tags": ["Dashboard"],
         "summary": "Delete dashboard",
@@ -1057,6 +1103,11 @@
                 "example": "viodghfj5435346yuletsd"
               },
               "backgroundURL": { "type": "string", "description": "backgroundURL" },
+              "currentDashboard": {
+                "type": "boolean",
+                "description": "status",
+                "example": "false"
+              },
               "icon": {
                 "type": "string",
                 "description": "URL"
@@ -1153,6 +1204,11 @@
             "description": "name",
             "example": "User-name"
           },
+          "currentDashboard": {
+            "type": "boolean",
+            "description": "status",
+            "example": "false"
+          },
           "backgroundURL": {
             "type": "string",
             "description": "URL"
@@ -1175,6 +1231,11 @@
                 "type": "string",
                 "description": "id from DB",
                 "example": "viodghfj5435346yuletsd"
+              },
+              "currentDashboard": {
+                "type": "boolean",
+                "description": "status",
+                "example": "false"
               },
               "backgroundURL": { "type": "string", "description": "backgroundURL" },
               "owner": { "type": "string", "description": "owner" },
@@ -1203,6 +1264,44 @@
                 }
               }
             }
+          }
+        }
+      },
+      "ChangeCurrentStatusOfDashboardRequest":{
+        "type": "object",
+        "properties": {
+          "currentDashboard": {
+            "type": "boolean" ,
+            "description": "new status of Dashboard"
+          }
+        }
+      },
+      "ChangeCurrentStatusOfDashboardResponse":{
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "id from DB",
+            "example": "viodghfj5435346yuletsd"
+          },
+          "currentDashboard": {
+            "type": "boolean",
+            "description": "status",
+            "example": "false"
+          },
+          "name": {
+            "type": "string",
+            "description": "name",
+            "example": "User-name"
+          },
+          "backgroundURL": {
+            "type": "string",
+            "description": "URL"
+          },
+          "owner": {
+            "type": "string",
+            "description": "owner",
+            "example": "DB-user-ID"
           }
         }
       },
