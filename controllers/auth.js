@@ -5,6 +5,7 @@ const HttpError = require("../helpers/HttpError");
 const sendEmail = require("../helpers/sendEmail");
 const controllerWrapper = require("../helpers/decorators");
 
+
 const { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } = process.env;
 
 async function register(req, res) {
@@ -40,7 +41,7 @@ async function login(req, res) {
   const payload = { id: user._id };
 
   const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, {
-    expiresIn: "2m",
+    expiresIn: "10m",
   });
   const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, {
     expiresIn: "7d"
@@ -58,7 +59,7 @@ async function login(req, res) {
     },
   });
 }
-const refresh = async (req, res) => {
+async function refresh(req, res) {
   const { refreshToken: token } = req.body;
   try {
     const { id } = jwt.verify(token, REFRESH_TOKEN_KEY);
@@ -66,14 +67,12 @@ const refresh = async (req, res) => {
     if (!isExist) {
       throw HttpError(403, "Token invalid");
     }
-
     const payload = {
       id,
     }
-
-    const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, { expiresIn: "2m" });
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, { expiresIn: "10m" });
     const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, { expiresIn: "7d" });
-
+    await User.findByIdAndUpdate(id, { accessToken, refreshToken });
     res.json({
       accessToken,
       refreshToken,
@@ -195,5 +194,5 @@ module.exports = {
   updateTheme: controllerWrapper(updateTheme),
   updateProfile: controllerWrapper(updateProfile),
   getHelpEmail: controllerWrapper(getHelpEmail),
-  refresh,
+  refresh: controllerWrapper(refresh),
 };
