@@ -5,8 +5,7 @@ const HttpError = require("../helpers/HttpError");
 const sendEmail = require("../helpers/sendEmail");
 const controllerWrapper = require("../helpers/decorators");
 
-
-const { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } = process.env;
+const { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, FRONTEND_URL } = process.env;
 
 async function register(req, res) {
   const { email, password } = req.body;
@@ -44,8 +43,8 @@ async function login(req, res) {
     expiresIn: "10m",
   });
   const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, {
-    expiresIn: "7d"
-  })
+    expiresIn: "7d",
+  });
   await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
   res.status(200).json({
     accessToken,
@@ -59,6 +58,22 @@ async function login(req, res) {
     },
   });
 }
+
+const googleAuth = async (req, res) => {
+  const { _id: id } = req.user;
+  const payload = { id };
+
+  const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, { expiresIn: "10m" });
+  const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, {
+    expiresIn: "7d",
+  });
+  await User.findByIdAndUpdate(id, { accessToken, refreshToken });
+
+  res.redirect(
+    `${FRONTEND_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+  );
+};
+
 async function refresh(req, res) {
   const { refreshToken: token } = req.body;
   try {
@@ -69,16 +84,19 @@ async function refresh(req, res) {
     }
     const payload = {
       id,
-    }
-    const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, { expiresIn: "10m" });
-    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, { expiresIn: "7d" });
+    };
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, {
+      expiresIn: "10m",
+    });
+    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, {
+      expiresIn: "7d",
+    });
     await User.findByIdAndUpdate(id, { accessToken, refreshToken });
     res.json({
       accessToken,
       refreshToken,
-    })
-  }
-  catch (error) {
+    });
+  } catch (error) {
     throw HttpError(403, error.message);
   }
 }
@@ -194,6 +212,7 @@ async function getHelpEmail(req, res) {
 module.exports = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
+  googleAuth: controllerWrapper(googleAuth),
   getCurrent: controllerWrapper(getCurrent),
   logout: controllerWrapper(logout),
   updateTheme: controllerWrapper(updateTheme),
