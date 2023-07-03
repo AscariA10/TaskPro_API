@@ -95,7 +95,7 @@ async function getCurrent(req, res) {
 
 async function logout(req, res) {
   const { id } = req.user;
-  await User.findByIdAndUpdate(id, { token: "" });
+  await User.findByIdAndUpdate(id, { accessToken: "", refreshToken: "" });
   res.status(204).json();
 }
 

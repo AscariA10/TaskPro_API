@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.get("/", authenticate, getAll);
 
-router.get("/:dashboardId", getById);
+router.get("/:dashboardId", authenticate, getById);
 
 router.post("/", authenticate, addNew);
 
-router.put("/:dashboardId", updateById);
+router.put("/:dashboardId", authenticate, updateById);
 
-router.delete("/:dashboardId", removeById);
+router.delete("/:dashboardId", authenticate, removeById);
 
 module.exports = router;

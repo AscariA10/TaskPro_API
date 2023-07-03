@@ -12,14 +12,14 @@ const authenticate = require("../../middlewares/authenticate");
 
 const router = express.Router();
 
-router.get("/:cardId", getById);
+router.get("/:cardId", authenticate, getById);
 
 router.post("/:columnId", authenticate, addNew);
 
-router.put("/:cardId", updateById);
+router.put("/:cardId", authenticate, updateById);
 
-router.delete("/:cardId", removeById);
+router.delete("/:cardId", authenticate, removeById);
 
-router.patch("/:cardId/owner/:columnId", setNewCardOwner);
+router.patch("/:cardId/owner/:columnId", authenticate, setNewCardOwner);
 
 module.exports = router;
