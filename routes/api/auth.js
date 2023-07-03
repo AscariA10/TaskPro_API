@@ -2,6 +2,7 @@ const express = require("express");
 const {
   register,
   login,
+  refresh,
   getCurrent,
   logout,
   updateTheme,
@@ -19,6 +20,8 @@ const router = express.Router();
 router.post("/register", validateBody(schemas.registerSchema), register);
 
 router.post("/login", validateBody(schemas.loginSchema), login);
+
+router.post("/refresh", validateBody(schemas.refreshSchema), refresh)
 
 router.get("/current", authenticate, getCurrent);
 

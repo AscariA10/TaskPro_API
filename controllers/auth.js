@@ -5,7 +5,8 @@ const HttpError = require("../helpers/HttpError");
 const sendEmail = require("../helpers/sendEmail");
 const controllerWrapper = require("../helpers/decorators");
 
-const { JWT_TOKEN_KEY } = process.env;
+
+const { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } = process.env;
 
 async function register(req, res) {
   const { email, password } = req.body;
@@ -39,12 +40,16 @@ async function login(req, res) {
   }
   const payload = { id: user._id };
 
-  const token = jwt.sign(payload, JWT_TOKEN_KEY, {
-    expiresIn: "23h",
+  const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, {
+    expiresIn: "10m",
   });
-  await User.findByIdAndUpdate(user._id, { token });
+  const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, {
+    expiresIn: "7d"
+  })
+  await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
   res.status(200).json({
-    token,
+    accessToken,
+    refreshToken,
     user: {
       _id: user._id,
       name: user.name,
@@ -53,6 +58,29 @@ async function login(req, res) {
       avatarURL: user.avatarURL,
     },
   });
+}
+async function refresh(req, res) {
+  const { refreshToken: token } = req.body;
+  try {
+    const { id } = jwt.verify(token, REFRESH_TOKEN_KEY);
+    const isExist = await User.findOne({ refreshToken: token });
+    if (!isExist) {
+      throw HttpError(403, "Token invalid");
+    }
+    const payload = {
+      id,
+    }
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, { expiresIn: "10m" });
+    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_KEY, { expiresIn: "7d" });
+    await User.findByIdAndUpdate(id, { accessToken, refreshToken });
+    res.json({
+      accessToken,
+      refreshToken,
+    })
+  }
+  catch (error) {
+    throw HttpError(403, error.message);
+  }
 }
 
 async function getCurrent(req, res) {
@@ -71,7 +99,7 @@ async function getCurrent(req, res) {
 
 async function logout(req, res) {
   const { id } = req.user;
-  await User.findByIdAndUpdate(id, { token: "" });
+  await User.findByIdAndUpdate(id, { accessToken: "", refreshToken: "" });
   res.status(204).json();
 }
 
@@ -171,4 +199,5 @@ module.exports = {
   updateTheme: controllerWrapper(updateTheme),
   updateProfile: controllerWrapper(updateProfile),
   getHelpEmail: controllerWrapper(getHelpEmail),
+  refresh: controllerWrapper(refresh),
 };

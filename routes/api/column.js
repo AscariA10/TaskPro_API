@@ -1,4 +1,5 @@
 const express = require("express");
+const authenticate = require('../../middlewares/authenticate')
 const {
   getById,
   updateById,
@@ -8,12 +9,12 @@ const {
 
 const router = express.Router();
 
-router.get("/:columnId", getById);
+router.get("/:columnId", authenticate, getById);
 
-router.post("/:dashboardId", addNew);
+router.post("/:dashboardId", authenticate, addNew);
 
-router.put("/:columnId", updateById);
+router.put("/:columnId", authenticate, updateById);
 
-router.delete("/:columnId", removeById);
+router.delete("/:columnId", authenticate, removeById);
 
 module.exports = router;
