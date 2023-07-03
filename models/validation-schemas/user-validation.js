@@ -26,7 +26,11 @@ const helpSchema = Joi.object({
   email: Joi.string().pattern(emailRegExp).required(),
   comment: Joi.string(),
 });
+const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+})
 
-const schemas = { registerSchema, loginSchema, themeSchema, userSchema, helpSchema };
+
+const schemas = { registerSchema, loginSchema, themeSchema, userSchema, helpSchema, refreshSchema };
 
 module.exports = schemas;

@@ -29,11 +29,12 @@ const userSchema = new Schema(
     },
 
     avatarURL: { type: String },
-
-    token: {
+    accessToken: {
       type: String,
-      default: null,
     },
+    refreshToken: {
+      type: String,
+    }
   },
   { versionKey: false, timestamps: true }
 );
