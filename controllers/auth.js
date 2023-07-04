@@ -60,7 +60,7 @@ async function login(req, res) {
 }
 
 const googleAuth = async (req, res) => {
-  const { _id: id } = req.user;
+  const { _id: id, name, email, theme, avatarURL } = req.user;
   const payload = { id };
 
   const accessToken = jwt.sign(payload, ACCESS_TOKEN_KEY, { expiresIn: "10m" });
@@ -70,7 +70,7 @@ const googleAuth = async (req, res) => {
   await User.findByIdAndUpdate(id, { accessToken, refreshToken });
 
   res.redirect(
-    `${FRONTEND_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    `${FRONTEND_URL}?_id=${id}&name=${name}&email=${email}&theme=${theme}&avatarURL=${avatarURL}&accessToken=${accessToken}&refreshToken=${refreshToken}`
   );
 };
 

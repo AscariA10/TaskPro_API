@@ -34,7 +34,7 @@ const userSchema = new Schema(
     },
     refreshToken: {
       type: String,
-    }
+    },
   },
   { versionKey: false, timestamps: true }
 );
