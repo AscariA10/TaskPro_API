@@ -23,7 +23,7 @@ How to clone project:
 
 Our Team(and main roles):
 
-1.
+1. Pavlo Baryshnikov - Team Lead / Frontend developer
 2.
 3.
 4.
