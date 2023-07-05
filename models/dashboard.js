@@ -9,7 +9,6 @@ const dashboardSchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     backgroundURL: {
       type: String,

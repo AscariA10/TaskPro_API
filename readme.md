@@ -19,6 +19,8 @@ Mongoose as a library for interaction with DB. For routing we use Express framew
 Also we implement possibility for saving user pictures in Cloudinary service.
 Work with user mail's realized with nodemailer package and special account for this project.
 
+How to clone project:
+
 Our Team(and main roles):
 
 1.
