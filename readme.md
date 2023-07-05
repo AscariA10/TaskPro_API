@@ -6,7 +6,7 @@ Front-End:
 Github: https://github.com/resinner/TaskPro-FrontEnd-Team6
 Page: https://resinner.github.io/TaskPro-FrontEnd-Team6/
 
-Back-End: 
+Back-End:
 Github: https://github.com/AscariA10/TaskPro_API
 Page: https://taskproapi-ukbi.onrender.com
 Routes: https://taskproapi-ukbi.onrender.com/api-docs/#/
@@ -31,7 +31,7 @@ Our Team(and main roles):
 6.
 7.
 8.
-9.
+9. Roman Dutkevych - Backend developer
 10.
 11.
 12.
