@@ -21,7 +21,7 @@ Work with user mail's realized with nodemailer package and special account for t
 
 Our Team(and main roles):
 
-1.
+1. Pavlo Baryshnikov - Team Lead
 2.
 3.
 4.
