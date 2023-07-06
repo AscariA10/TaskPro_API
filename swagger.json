@@ -155,17 +155,6 @@
         "summary": "User logout",
         "parameters": [],
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Logout object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LogoutRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "Successful operation",
@@ -941,22 +930,6 @@
               "avatarURL": { "type": "string", "description": "avatar address on cloudinary" },
               "theme": { "type": "string", "description": "theme", "example": "violet" }
             }
-          }
-        }
-      },
-      "LogoutRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email@email.com"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
           }
         }
       },
