@@ -24,9 +24,9 @@ How to clone project:
 Our Team(and main roles):
 
 1. Pavlo Baryshnikov - Team Lead / Frontend developer
-2. Kravchenko Volodymyr - SCRUM, Backend group lead 
+2. Kravchenko Volodymyr - SCRUM, Backend group lead
 3. Oleksandra Ilchenko - FullStack Developer
-4.
+4. Bogdan Kaleniuk - Frontend developer
 5.
 6.
 7.
