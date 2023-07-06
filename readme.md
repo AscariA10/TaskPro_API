@@ -39,7 +39,7 @@ Our Team(and main roles):
 3. Oleksandra Ilchenko - FullStack Developer
 4. Bogdan Kaleniuk - Frontend developer
 5. Anna Sobova - Frontend developer
-6.
+6. Natalia Moskvychova - Frontend developer
 7.
 8. Vasyl Bondarenko - Backend developer
 9. Roman Dutkevych - Backend developer
