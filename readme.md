@@ -27,7 +27,7 @@ Our Team(and main roles):
 2. Kravchenko Volodymyr - SCRUM, Backend group lead
 3. Oleksandra Ilchenko - FullStack Developer
 4. Bogdan Kaleniuk - Frontend developer
-5.
+5. Anna Sobova - Frontend developer
 6.
 7.
 8. Vasyl Bondarenko - Backend developer
