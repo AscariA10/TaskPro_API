@@ -21,6 +21,17 @@ Work with user mail's realized with nodemailer package and special account for t
 
 How to clone project:
 
+1. clone repository;
+2. write npm i in terminal;
+3. add .env file to your project;
+4. next enviromental variables are required:
+ - DB_HOST - your database connection link
+ - ACCESS_TOKEN_KEY - your key for access token
+ - REFRESH_TOKEN_KEY - your key for refresh token, for longer connection
+ - CLOUD_NAME , CLOUDINARY_API_KEY , CLOUDINARY_API_SECRET_KEY , CLOUDINARY_URL - your settings for cloudinary
+ connection, where dashboard backgrounds and user avatars stored
+ - UKR_NET_EMAIL , UKR_NET_PASSWORD - settings for help window message in app.
+
 Our Team(and main roles):
 
 1. Pavlo Baryshnikov - Team Lead / Frontend developer
