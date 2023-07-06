@@ -30,7 +30,7 @@ Our Team(and main roles):
 5.
 6.
 7.
-8.
+8. Vasyl Bondarenko - Backend developer
 9. Roman Dutkevych - Backend developer
 10.
 11.
