@@ -12,11 +12,7 @@ router.post("/", authenticate, addNew);
 
 router.put("/:dashboardId", authenticate, updateById);
 
-//
-
 router.patch("/:dashboardId", authenticate, updateCurrentDashboard)
-
-//
 
 router.delete("/:dashboardId", authenticate, removeById);
 
